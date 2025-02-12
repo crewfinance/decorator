@@ -17,7 +17,7 @@ defmodule Decorator.Decorate do
     attrs = extract_attributes(env.module, body)
     decorated = {kind, fun, args, guards, body, decorators, attrs}
 
-    Module.put_attribute(env.module, :decorated, decorated)
+    Module.put_attribute(env.module, :decorator_decorated, decorated)
     Module.delete_attribute(env.module, :decorate)
   end
 
@@ -34,8 +34,8 @@ defmodule Decorator.Decorate do
   end
 
   defmacro before_compile(env) do
-    decorated = Module.get_attribute(env.module, :decorated) |> Enum.reverse()
-    Module.delete_attribute(env.module, :decorated)
+    decorated = Module.get_attribute(env.module, :decorator_decorated) |> Enum.reverse()
+    Module.delete_attribute(env.module, :decorator_decorated)
 
     decorated_functions = decorated_functions(decorated)
 
